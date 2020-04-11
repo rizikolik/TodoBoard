@@ -1,5 +1,6 @@
 class Item
-	attr_accessor :title , :deadline , :description
+	attr_reader :deadline, :done
+    attr_accessor :title, :description
 	def initialize(title, deadline, description)
 		if Item.valid_date?(deadline)
 			@title=title
@@ -20,6 +21,9 @@ class Item
 		return false if !(0..31).include?(day)
 		true
 	end
+	def toggle
+        @done = !@done
+    end
 end
 
 

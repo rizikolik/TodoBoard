@@ -4,32 +4,45 @@ require_relative "item"
 
 
 class Board
-    def initialize(label)
-        @list=List.new(label)
+    def initialize
+        @lists={}
     end
 
     def get_command
         puts "Please enter a command : "
-        command,*args=gets.chomp.split(" ")
+        command,list,*args=gets.chomp.split(" ")
         case command
+        when 'ls'
+            @lists.keys.each { |label| puts ' ' + label }
+        when 'showall'
+            @lists.each_value(&:print)
+
+        when "mklist"
+            @lists[list]=List.new(list)
         when 'mktodo'
-            @list.add_item(*args)
+            @lists[list].add_item(*args)
         when 'up'
-            @list.up(*args.map(&:to_i))
+            @lists[list].up(*args.map(&:to_i))
         when 'down'
-            @list.down(*args.map(&:to_i))
+            @lists[list].down(*args.map(&:to_i))
         when 'swap'
-            @list.swap(*args.map(&:to_i))
+            @lists[list].swap(*args.map(&:to_i))
+        when "rm"
+            @lists[list].remove_item(*args[0].to_i)
+        when "toggle"
+            @lists[list].toggle_item(*args[0].to_i)
         when 'sort'
-            @list.sort_by_date!
+            @lists[list].sort_by_date!
         when 'priority'
-            @list.print_priority
+            @lists[list].print_priority
         when 'print'
             if args.empty?
-                @list.print
+                @lists[list].print
             else
-                @list.print_full_item(args[0].to_i)
+                @lists[list].print_full_item(args[0].to_i)
             end
+        when "purge"
+             @lists[list].purge
         when 'quit'
             return false
         else
@@ -47,3 +60,4 @@ class Board
 
 
 end
+Board.new.run

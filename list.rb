@@ -59,13 +59,14 @@ class List
     end
 
     def print_full_item(idx)
-      if valid_index?(idx)
+     return  if !valid_index?(idx)
       puts"------------------------------------------"
-      puts "#{@list[idx]}                         #{@list[idx]}"
-     puts" #{@list[idx]}"
+      puts "#{@items[idx].title}                         #{@items[idx].deadline}"
+     puts" #{@items[idx].description}"
+     puts " status : #{@items[idx].done ? "done": "undone "}"
 puts"------------------------------------------"
         
-      end
+  
     end
 
       def print_priority
@@ -96,6 +97,22 @@ puts"------------------------------------------"
      def sort_by_date!
       @items.sort_by! { |item| item.deadline }
      end
+
+     def toggle_item(index)
+     return false  if !valid_index?(index)
+       @items[index].toggle
+       
+    end
+
+    def remove_item(index)
+      return false if !valid_index?(index)
+      @items.delete_at(index)
+    end
+    def purge
+     array=@items.select.with_index {|k,i|  i if k.done} 
+     array.each{|k| remove_item(k)}
+    end
+
    
 
 
