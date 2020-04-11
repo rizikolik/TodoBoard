@@ -5,6 +5,7 @@ class Item
 			@title=title
 			@deadline=deadline
 			@description=description
+			@done=false
 		else
 			puts "Enter a valid date:"
 		end
